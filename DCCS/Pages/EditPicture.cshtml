@@ -1,0 +1,21 @@
+﻿@page "/profile/{userid:long}/editpicture"
+@model DCCS.Pages.EditPictureModel
+@{
+}
+
+<div class="page-title">edit picture</div>
+<div class="form">
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="label">
+            Player Picture <a href="~/image/example.png" download=""><u>Download example</u></a>
+        </div>
+        <div class="form-fail">Please upload a picture that is at least 400x400 pixels in size and has a 1:1 square aspect ratio with a transparent background for optimal display on our website.</div>
+        <span class="validation-text" asp-validation-for="Picture"></span>
+        <input class="custom-file-input form-control" placeholder="Upload a picture" asp-for="Picture" />
+
+        <div class="option">
+            <button type="submit" class="submit-button" style="width: auto;">Replace Picture</button>
+        </div>
+    </form>
+</div>

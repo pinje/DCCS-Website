@@ -1,0 +1,62 @@
+﻿@page
+@model DCCS.Pages.UserConfirmationModel
+@{
+    ViewData["Title"] = "Admin";
+}
+@using DAL.UserBranch;
+
+@section Scripts {
+    <script>
+        const shape = document.querySelector('.shape');
+
+        window.addEventListener('load', () => {
+            shape.classList.add('active');
+        });
+    </script>
+    <partial name="_Loader" />
+}
+<div class="loader"></div>
+
+<div class="page-title">Player Confirmation</div>
+<div class="user-list">   
+    <div class="row-head">
+        <div>Steam ID</div>
+        <div>Discord</div>
+        <div>IGN</div>
+        <div>Name</div>
+        <div>Birthday</div>
+        <div>University</div>
+        <div>Faceit URL</div>
+        <div>Picture</div>
+        <div>Proof</div>
+        <div>Accept?</div>
+    </div>
+@foreach(var user in Model.users) {
+    <div class="row">
+        <div>@user.SteamId</div>
+        <div>@user.DiscordName#@user.DiscordTag</div>
+        <div>@user.Ign</div>
+        <div>@user.Firstname @user.Lastname</div>
+        <div>@user.Birthday</div>
+        <div>@user.University</div>
+        <a href="@user.FaceitURL" target="_blank">@user.FaceitURL</a>
+        <a href="~/image/picture/@(user.DiscordId).png" download>
+            <u>download</u>
+        </a>
+        <a href="~/image/student_card/@(user.DiscordId)_proof.png" download="">
+            <u>download</u>
+        </a>
+        <div>
+            <form method="post" asp-page-handler="Accept">
+                <input type="hidden" name="buttonValue" value="@user.DiscordId">
+                <button type="submit" class="submit-button">Accept</button>
+            </form>
+            <br/>
+            <form method="post" asp-page-handler="Deny">
+                <input type="hidden" name="buttonValue2" value="@user.DiscordId">
+                <button type="submit" class="submit-button-red">Deny</button>
+            </form>
+        </div>
+    </div>
+}
+</div>

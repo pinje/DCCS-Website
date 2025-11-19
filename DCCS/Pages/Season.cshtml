@@ -1,0 +1,50 @@
+﻿@page "{seasonid:int}/{handler?}"
+@model DCCS.Pages.SeasonModel
+@{
+    ViewData["Title"] = "Season";
+}
+
+<div class="page-title">Registration for @Model.Season.SeasonName</div>
+@if (Model.captain) {
+    if (Model.Status == "pending")
+    {
+        <div>Pending for admin approval.</div>
+    } else if (Model.Status == "accepted")
+    {
+        <div>Your team is registered for this tournament.</div>
+    } else
+    {
+        <form method="post" enctype="multipart/form-data" asp-page-handler="Participate" class="changestatus">
+            <div style="margin-bottom: 10px;">Select a team</div>
+            <div class="season-selection">
+                <select id="role_input" style="margin-right: 10px;" asp-for="team">
+                @foreach (var team in Model.Teams)
+                {
+                            <option value="@team.TeamId">@team.TeamName</option>
+                }
+                </select>
+                <div>
+                    <input type="hidden" name="buttonValue">
+                    <button type="submit" class="submit-button">Participate</button>
+                </div>
+            </div>
+        </form>
+    }
+}
+
+<div class="page-title" style="margin-top: 80px;">registered teams</div>
+@if (Model.Participants.Count == 0)
+{
+    <div>No participants yet.</div>
+} else
+{
+    @foreach (var team in Model.Participants)
+    {
+        <a class="nav-link" asp-area="" asp-page="/Team" asp-route-teamid="@team.TeamId">
+            <div class="participant">
+                <div><img src="/image/team_logo/@(team.TeamName).png"></div>
+                <div>@team.TeamName</div>
+            </div>
+        </a>
+    }
+}

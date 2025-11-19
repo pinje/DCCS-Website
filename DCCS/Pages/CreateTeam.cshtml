@@ -1,0 +1,57 @@
+﻿@page
+@model DCCS.Pages.CreateTeamModel
+@{
+    ViewData["Title"] = "Create Team";
+}
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<div class="page-title">Create Team</div>
+<div class="form">
+
+    <span class="form-fail">To ensure smooth team creation process, it is recommended that the team captain initiates the team setup.</span>
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="label">Team Name<span class="form-fail"> *</span></div>
+        <span class="validation-text" asp-validation-for="CreateTeamViewModel.TeamName"></span>
+        <input class="form-control" type="text" placeholder="Team Name" asp-for="CreateTeamViewModel.TeamName" />
+
+        <div class="label">Education Institute or Association Name<span class="form-fail"> *</span></div>
+        <span class="validation-text" asp-validation-for="CreateTeamViewModel.University"></span>
+        <input class="form-control" type="text" placeholder="University" asp-for="CreateTeamViewModel.University" />
+
+        <div class="label">FACEIT Team Page URL<span class="form-fail"> *</span></div>
+        <span class="validation-text" asp-validation-for="CreateTeamViewModel.FaceitURL"></span>
+        <input class="form-control" type="text" placeholder="FACEIT Team Page URL" asp-for="CreateTeamViewModel.FaceitURL" />
+
+        <div class="label">Team Logo<span class="form-fail"> *</span></div>
+        <span class="form-fail">Please upload a picture that is at least 500x500 pixels in size and has a 1:1 square aspect ratio for optimal display on our website.</span>
+        <span class="validation-text" asp-validation-for="TeamLogo"></span>
+        <input class="custom-file-input form-control" placeholder="Upload a logo" asp-for="TeamLogo" />
+
+        <div class="label">Representing <span class="form-fail"> *</span></div>
+        <select id="role_input" asp-for="Represent">
+            <option value="-">-</option>
+            <option value="university">University</option>
+            <option value="association">Association</option>
+        </select>@*
+
+        <div class="label">University the association is representing (if applicable)</div>
+        <span class="validation-text" asp-validation-for="CreateTeamViewModel.AssociationName"></span>
+        <input class="form-control" type="text" placeholder="University (if applicable)" asp-for="CreateTeamViewModel.AssociationName"/>*@
+
+        <div class="label">Rules<span class="form-fail"> *</span></div>
+        <div style="display: flex; align-items: center;">
+            <input id="rulesread_input" type="checkbox" asp-for="rulebookRead" style="margin-bottom: 0px;">
+            <a href="/rulebook.pdf" target="_blank">I have read and understand the rules as described in the rulebook</a>
+        </div>
+
+        <div class="form-fail">@Html.ValidationMessage("rulebook")</div>
+
+        <div class="option" style="display: flex; justify-content: end;">
+            <button type="submit" class="submit-button" style="width: auto;">Register</button>
+        </div>
+    </form>
+</div>

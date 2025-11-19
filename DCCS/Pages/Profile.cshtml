@@ -1,0 +1,200 @@
+﻿@page "{userid:long}/{handler?}"
+@model DCCS.Pages.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@section Scripts {
+    <script>
+        const shape = document.querySelector('.shape');
+
+        window.addEventListener('load', () => {
+            shape.classList.add('active');
+        });
+    </script>
+    <partial name="_Loader" />
+}
+<div class="loader"></div>
+
+
+@if (Model.Status == "missing")
+{
+    <div class="page-title">Profile</div>
+    <a class="nav-link" asp-area="" asp-page="/Signup"><div class="submit-button">create a new profile</div></a>
+}
+else if (Model.Status == "pending")
+{
+    <div class="page-title">Profile</div>
+    <div>Pending for admin approval.</div>
+} else
+{
+    <div class="playercard">
+        <div class="info">
+            <div class="title">
+                <div class="ign">@Model.user.Ign</div>
+                <div class="team"><a class="nav-link" asp-area="" asp-page="/Team" asp-route-teamid="@Model.TeamId">@Model.TeamName</a></div>
+            </div>
+            <div class="details">
+                <div class="row">
+                    <div class="left">Name</div>
+                    <div class="right">@(Model.user.Firstname) @(Model.user.Lastname)</div>
+                </div>
+                <div class="row">
+                    <div class="left">Age</div>
+                    <div class="right">@Model.Age</div>
+                </div>
+                <div class="row">
+                    <div class="left">Country</div>
+                    <div class="right">@Model.user.Country</div>
+                </div>
+                <div class="row">
+                    <div class="left">University</div>
+                    <div class="right">@Model.user.University</div>
+                </div>
+                <div class="row">
+                    <div class="left">Studies</div>
+                    <div class="right">@Model.user.Studies</div>
+                </div>
+                <div class="row">
+                    <div class="left">FACEIT</div>
+                    <div class="right"><a href="@Model.user.FaceitURL" target="_blank">URL</a></div>
+                </div>
+                <div class="row">
+                    <div class="left">Role</div>
+                    <div class="right">@Model.user.Role</div>
+                </div>
+                <div class="row">
+                    <div class="left">Discord</div>
+                    <div class="right">@(Model.user.DiscordName)#@(Model.user.DiscordTag)</div>
+                </div>
+            </div>
+        </div>
+        <div class="picture">
+            <div class="profile-picture">
+                <img src="/image/picture/@(Model.user.DiscordId).png" alt="Profile Picture">
+                <div class="shape"></div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.sameUser)
+    {
+        <div class="profileedit">
+            <form method="post" asp-page-handler="CreateTeam">
+                <button type="submit" class="submit-button" style="margin-right: 20px;">Create a new Team</button>
+            </form>
+            <form method="post" asp-page-handler="EditPicture">
+                <button type="submit" class="submit-button">Replace Picture</button>
+            </form>
+        </div>
+
+        <div class="teamedit">
+            <div class="team">You are in team: <a class="nav-link" asp-area="" asp-page="/Team" asp-route-teamid="@Model.TeamId">@Model.TeamName</a></div>
+            @if (Model.TeamName != "No Team")
+            {
+                @if (!Model.captain)
+                {
+                    <form method="post" asp-page-handler="LeaveTeam">
+                        <input type="hidden" name="buttonValue" value="@Model.user.TeamId">
+                        <button type="submit" class="submit-button-red">Leave Team</button>
+                    </form>
+                }
+            }
+        </div>
+    }
+
+    <div class="page-title" style="margin-top: 50px;">Config</div>
+    <div class="config-details">
+        <div class="row">
+            <div class="left">Display settings</div>
+            <div class="right">@(Model.user.AspectRatio) @(Model.user.Resolution) @(Model.user.ScalingMode)</div>
+        </div>
+        <div class="row">
+            <div class="left">Mouse</div>
+            <div class="right">@Model.user.Mouse</div>
+        </div>
+        <div class="row">
+            <div class="left">Sensitivity</div>
+            <div class="right">@Model.user.Sensitivity &#64 @(Model.user.Dpi) DPI</div>
+        </div>
+        <div class="row">
+            <div class="left">eDPI</div>
+            <div class="right">
+                @{
+                    double sens;
+                    bool senscheck = double.TryParse(Model.user.Sensitivity, out sens);
+                    int dpi;
+                    bool dpicheck = int.TryParse(Model.user.Dpi, out dpi);
+                    if(!senscheck || !dpicheck)
+                    {
+                        @("-")
+                    } else
+                    {
+                        @((Convert.ToDouble(Model.user.Sensitivity) * Convert.ToInt16(Model.user.Dpi)).ToString("N0"));
+                    }
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="left">Zoom</div>
+            <div class="right">@Model.user.ZoomSensitivity</div>
+        </div>
+        <div class="row">
+            <div class="left">Crosshair</div>
+            <div class="right">@Model.user.Crosshair</div>
+        </div>
+    </div>
+
+    @if (Model.sameUser)
+    {
+        <div class="page-title" style="margin-top: 50px;">Invites</div>
+        if (Model.Invites.Count == 0)
+        {
+                    <div>No Invites</div>
+        }
+        else
+        {
+            @foreach (var invite in Model.Invites)
+            {
+                <div class="invite-row">
+                    <div>You got invited to join <b>@invite[1]</b></div>
+                    <div>
+                        <form method="post" asp-page-handler="Accept">
+                            <input type="hidden" name="buttonValue" value="@invite[0]">
+                            <button type="submit" class="submit-button">Accept</button>
+                        </form>
+                    </div>
+                    <div>
+                        <form method="post" asp-page-handler="Deny">
+                            <input type="hidden" name="buttonValue" value="@invite[0]">
+                            <button type="submit" class="submit-button-red">Deny</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+    }
+
+    @if (Model.sameUser)
+    {
+        <div class="page-title" style="margin-top: 50px;">Teams Owned</div>
+        if (Model.TeamsOwned.Count > 0)
+        {
+            @foreach(var team in Model.TeamsOwned)
+            {
+                <a class="nav-link" asp-area="" asp-page="/Team" asp-route-teamid="@team.TeamId">@team.TeamName</a>
+            }
+        } else
+        {
+            <div>No Teams Owned.</div>
+        }
+
+        <div class="page-title" style="margin-top: 50px;">Delete Profile</div>
+
+        <form method="post" enctype="multipart/form-data" asp-page-handler="Delete">
+            <input name="buttonValue" class="form-control" style="width: 50%" placeholder="Enter the following to confirm: @Model.user.Ign">
+            <button type="submit" class="submit-button-red">Delete Profile</button>
+            <div class="form-fail">@Html.ValidationMessage("rulebook")</div>
+        </form>
+    }
+}

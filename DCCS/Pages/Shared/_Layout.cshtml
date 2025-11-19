@@ -1,0 +1,105 @@
+﻿@using System.Security.Claims;
+@using DAL.UserBranch;
+@using DLL;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="~/image/icon.png" sizes="32x32">
+    <title>@ViewData["Title"] | DCCS</title>
+    <!--<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />-->
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <div class="header-contents container">
+            <div class="header-head">
+                <a asp-area="" asp-page="/Index"><img src="~/image/dccs-logo.png" style="height: 75px;" /></a>
+                <div class="login">
+                    @if (User.Identity.IsAuthenticated) {
+                        <a asp-page="/Account/Logout">
+                            <div class="discord-login">
+                                <img src="~/image/discord-logo.png" style="height: 2rem;" />
+                                Logout Discord
+                            </div>
+                        </a>
+                    } else {
+                        <a asp-page="/Account/Login">
+                            <div class="discord-login">
+                                <img src="~/image/discord-logo.png" style="height: 2rem;" />
+                                Discord Login
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div>
+                <ul class="navbar-list">
+
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/Seasons">Seasons</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/About">About</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/Seasons">Seasons</a>
+                        </li>
+                        <li>
+                            @{
+                                UserManager userManager = new UserManager(new UserDAL());
+                                if (userManager.GetUserTeamId(User.FindFirstValue(ClaimTypes.NameIdentifier)) == "null")
+                                {
+                                    <a class="nav-link" asp-area="" asp-page="/CreateTeam">My Team</a>
+                                } else if (userManager.GetUserTeamId(User.FindFirstValue(ClaimTypes.NameIdentifier)) == "")
+                                {
+                                    <a class="nav-link" asp-area="" asp-page="/CreateTeam">My Team</a>
+                                } else
+                                {
+                                    <a class="nav-link" asp-area="" asp-page="/Team" asp-route-teamid="@(userManager.GetUserTeamId(User.FindFirstValue(ClaimTypes.NameIdentifier)))">My Team</a>
+                                }
+                            }
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/Profile" asp-route-userid="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Profile</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/About">About</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted" style="margin-top: 50px;">
+        <div class="container">
+            DCCS &copy; 2023 All rights reserved
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

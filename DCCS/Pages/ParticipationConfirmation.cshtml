@@ -1,0 +1,91 @@
+﻿@page
+@model DCCS.Pages.ParticipationConfirmationModel
+@{
+    ViewData["Title"] = "Admin";
+}
+
+@using System.Globalization
+
+@section Scripts {
+    <script>
+        const shape = document.querySelector('.shape');
+
+        window.addEventListener('load', () => {
+            shape.classList.add('active');
+        });
+    </script>
+    <partial name="_Loader" />
+}
+<div class="loader"></div>
+
+<div class="page-title">Participation Confirmation</div>
+@for (int row = 0; row < Model.Participations.Count; row++)
+{
+    <div class="participation-box">
+        <div>
+            <div class="left">Team Logo: </div>
+            <div class="right"><img src="/image/team_logo/@(Model.Teams[row].TeamName).png"></div>
+        </div>
+        <div>
+            <div class="left">Team Name: </div>
+            <div class="right">@Model.Teams[row].TeamName</div>
+        </div>
+        <div>
+            <div class="left">University: </div>
+            <div class="right">@Model.Teams[row].University</div>
+        </div>
+        <div>
+            <div class="left">FACEIT URL: </div>
+            <div class="right"><a href="@Model.Teams[row].FaceitURL" target="_blank">Faceit URL</a></div>
+        </div>
+        <div>
+            <div class="left">Representing: </div>
+            <div class="right">@Model.Teams[row].Represent</div>
+        </div>
+        <div>
+            <div class="left">Association Name: </div>
+            <div class="right">@Model.Teams[row].AssociationName</div>
+        </div>
+        <div class="players">
+            <div class="user-list">   
+                <div class="row-head">
+                    <div>Discord</div>
+                    <div>Name</div>
+                    <div>Birthday</div>
+                    <div>University</div>
+                    <div>Status</div>
+                    <div>Proof</div>
+                </div>
+                @foreach(var player in Model.Users[row])
+                {
+                    <div class="player">
+                        <div>@(player.DiscordName)#@(player.DiscordTag)</div>
+                        <div>@(player.Firstname) @(player.Lastname)</div>
+                        <div>@(player.Birthday?.ToString("dd/MM/yyyy"))</div>
+                        <div>@(player.University)</div>
+                        <div>@(player.Status)</div>
+                        <div>
+                            <a href="~/image/student_card/@(player.DiscordId)_proof.png" download="">
+                                <u>download</u>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="accept">
+            <form method="post" asp-page-handler="Accept">
+                <input type="hidden" name="buttonValue" value="@Model.Teams[row].TeamId">
+                <input type="hidden" name="buttonValue1" value="@Model.Participations[row].ParticipationId">
+                <button type="submit" class="submit-button">Accept</button>
+            </form>
+            <br />
+            <form method="post" asp-page-handler="Deny">
+                <input type="hidden" name="buttonValue" value="@Model.Teams[row].TeamId">
+                <input type="hidden" name="buttonValue1" value="@Model.Participations[row].ParticipationId">
+                <button type="submit" class="submit-button-red">Deny</button>
+            </form>
+        </div>
+    </div>
+}

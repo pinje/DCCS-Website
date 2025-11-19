@@ -1,0 +1,91 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Registration Steps</h1>
+    <ol>
+        <li>Login via Discord</li>
+        <li>Create a profile page</li>
+        <li>Wait for admin approval</li>
+        <h3 class="display-4">If you are the captain of your team</h3>
+        <ol>
+            <li>Create a team</li>
+            <li>Invite people from the team page</li>
+            <li>Once they joined, set status (Local or External) for your players from the team page</li>
+            <li>Once the team is completed, Go to the seasons page</li>
+            <li>Select a tournament</li>
+            <li>Click on the participate button</li>
+            <li>Wait for admins approval</li>
+        </ol>
+        <h3 class="display-4">If you are not the captain of your team</h3>
+        <ol>
+            <li>Get Invited by your captain</li>
+            <li>Accept the invitation from your profile page</li>
+            <li>Wait for your captain to assign you a status</li>
+            <li>Wait for your captain to register for a tournament</li>
+        </ol>
+    </ol>
+
+    <h1 class="display-4">FAQ</h1>
+    <div class="question-box">
+        <div class="question">Prerequisite</div>
+        <div class="form-fail">Make sure to join the DCCS discord server. Registration won’t work if you are not in the server.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">How can I create my profile?</div>
+        <div class="answer">Go to the profile page via the navigation bar.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">Do I have to fill everything for my profile?</div>
+        <div class="answer">No, forms without a red star are not required. Make sure to read which data will be public and which ones are not.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">How long do I have to wait for admin confirmation for my profile?</div>
+        <div class="answer">If your request has not been processed within 24 hours, please feel free to contact an admin on discord.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">How can I create a team?</div>
+        <div class="answer">Go to the my team page via the navigation bar. It auto redirects you to the team creation form if you are not in a team already. You can also access it via your profile page.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">Why can’t I create a team?</div>
+        <div class="answer">You need to create a profile before creating a team.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">How can I access my team page?</div>
+        <div class="answer">You can access it via the navigation bar, tab is called "My Team". You can also access it via your profile, just under your in-game name. Click on it.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">Why can't I invite players to my team?</div>
+        <div class="answer">Only the captain can invite players to the team. Captains can also set / change player status as well as deleting the team.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">Where can I see my invites?</div>
+        <div class="answer">
+            You can see invitations you received on the profile page. You can accept them or deny them.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">How do I leave a team?</div>
+        <div class="answer">You can leave your team by going to your profile page. There, you will see a red button “Leave Team”. After leaving the team, your name will be available for invites.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">I don’t see the leave team button on my profile page.</div>
+        <div class="answer">That is because you are captain of that team. Captains cannot leave the team without deleting the team itself. Delete the team from the team page first. This will automatically make you leave the team. </div>
+    </div>
+    <div class="question-box">
+        <div class="question">Which data are stored?</div>
+        <div class="answer">All data you submit for your profile creation as well as team creation are stored. Your profile picture, team logo and proof picture are stored as well. When you delete your profile or your team, all data are wiped out.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">Is the website finished?</div>
+        <div class="answer">No, the website is still in development. Additional features will be added later. The website currently focuses on registration only.</div>
+    </div>
+    <div class="question-box">
+        <div class="question">Why has my team participation request been rejected?</div>
+        <div class="answer">There can be multiple reasons. It can be that some player in your team didn’t meet the requirements, or it can be that your team has more external players than local players etc… Reread the rulebook and apply again.</div>
+    </div>
+    <br/><br/>
+</div>
